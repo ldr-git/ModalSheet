@@ -6,8 +6,8 @@
 	android:background="@android:color/darker_gray"
 	tools:context=".BaseModalSheetActivity">
 	
-	<include layout="@layout/content_base_modal_sheet" />
+	<include layout="@layout/content_base_modal_sheet_background" />
 	
-	<include layout="@layout/content_base_bottom_sheet" />
+	<include layout="@layout/content_base_modal_sheet_foreground" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
