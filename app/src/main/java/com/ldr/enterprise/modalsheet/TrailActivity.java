@@ -24,9 +24,6 @@ public class TrailActivity extends BaseModalSheetActivity {
     @Nullable
     @BindView(R.id.textview_label_title)
     TextView textViewLabelTitle;
-    @Nullable
-    @BindView(R.id.titleView)
-    LinearLayout titleView;
 
     @NonNull
     @Override

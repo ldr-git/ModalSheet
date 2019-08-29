@@ -8,13 +8,13 @@
 	android:background="@drawable/bottom_sheet_background"
 	android:orientation="vertical"
 	app:behavior_fitToContents="false"
-	app:behavior_hideable="false"
+	app:behavior_hideable="true"
 	app:behavior_peekHeight="200dp"
 	app:layout_behavior="@string/bottom_sheet_behavior"
-	tools:context=".BaseModalSheetActivity"
-	tools:showIn="@layout/activity_base_modal_sheet">
+	tools:context=".BaseModalSheetFragmentDialog">
 	
 	<FrameLayout
+		android:id="@+id/indicatorView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 		
@@ -29,6 +29,7 @@
 	</FrameLayout>
 	
 	<androidx.core.widget.NestedScrollView
+		android:id="@+id/parentScrollView"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 		

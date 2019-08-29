@@ -11,7 +11,7 @@ public abstract class SimpleBottomSheetCallback extends BottomSheetBehavior.Bott
 
     private static final String TAG = "BottomSheetCallback";
 
-    public void onStateChanged(int newState) {
+    public void onStateChanged(@BottomSheetBehavior.State int newState) {
         if (newState == BottomSheetBehavior.STATE_SETTLING) {
             Log.d(TAG, "STATE_SETTLING");
         }

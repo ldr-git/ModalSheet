@@ -1,6 +1,7 @@
 package com.ldr.enterprise.library;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -30,6 +31,10 @@ public abstract class BaseModalSheetActivity extends AppCompatActivity {
         return bottomSheetBehavior.getPeekHeight();
     }
 
+    protected void onStateChangedObserver(@BottomSheetBehavior.State int newState) {
+        //This space is for rent
+    }
+
     LinearLayout bottomSheet;
     LinearLayout contentView;
     LinearLayout contentBackground;
@@ -49,8 +54,14 @@ public abstract class BaseModalSheetActivity extends AppCompatActivity {
 
         bottomSheetBehavior.setHalfExpandedRatio(0.6f);
         bottomSheetBehavior.setFitToContents(false);
-        bottomSheetBehavior.setExpandedOffset(AppHelper.getActionBarHeight(this));
+        bottomSheetBehavior.setExpandedOffset(AppHelper.getStatusBarHeight(this));
         bottomSheetBehavior.setBottomSheetCallback(new SimpleBottomSheetCallback() {
+
+            @Override
+            public void onStateChanged(int newState) {
+                super.onStateChanged(newState);
+                onStateChangedObserver(newState);
+            }
 
             @Override
             public void activateParallax(float slideOffset) {

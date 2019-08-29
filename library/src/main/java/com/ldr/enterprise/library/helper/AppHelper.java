@@ -81,4 +81,9 @@ public class AppHelper {
         return Float.parseFloat(df.format(number));
     }
 
+    public static int dp(Context context, int dp) {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, dm);
+    }
+
 }

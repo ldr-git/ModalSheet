@@ -17,7 +17,7 @@ allprojects {
 
 ```gradle
 dependencies {
-	        implementation 'com.github.ldr-git:ModalSheet:v0.0.1'
+	        implementation 'com.github.ldr-git:ModalSheet:v0.0.2'
 	}
 ```
 
