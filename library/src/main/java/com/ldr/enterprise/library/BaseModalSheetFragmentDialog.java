@@ -7,12 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 
@@ -24,6 +27,8 @@ import com.ldr.enterprise.library.interfaces.SimpleBottomSheetCallback;
 
 public abstract class BaseModalSheetFragmentDialog extends BottomSheetDialogFragment {
 
+    private static final String TAG = BaseModalSheetFragmentDialog.class.getSimpleName();
+
     @Override
     public int getTheme() {
         return R.style.BottomSheetDialogTheme;
@@ -33,10 +38,26 @@ public abstract class BaseModalSheetFragmentDialog extends BottomSheetDialogFrag
     @LayoutRes
     protected abstract int getLayoutRes();
 
-    protected abstract void onViewAttached();
+    protected abstract void onViewAttached(View view);
 
     protected void onStateChangedObserver(@BottomSheetBehavior.State int newState) {
         //This space is for rent
+    }
+
+    protected void setOnCloseClickedListener(View.OnClickListener onClickListener) {
+        closeView.setVisibility(View.VISIBLE);
+        closeView.setOnClickListener(onClickListener);
+    }
+
+    protected void setModalTitle(CharSequence charSequence) {
+        titleView.setVisibility(View.VISIBLE);
+        titleView.setText(charSequence);
+    }
+
+    protected void setBottomSheetBehaviorState(@BottomSheetBehavior.State int newState) {
+        if (sheetBehavior != null) {
+            sheetBehavior.setState(newState);
+        }
     }
 
     protected void setPeekHeight(int peekHeight) {
@@ -60,8 +81,7 @@ public abstract class BaseModalSheetFragmentDialog extends BottomSheetDialogFrag
         this.hideable = hideable;
     }
 
-    private FrameLayout indicatorView;
-    private LinearLayout bottomSheet;
+    private ConstraintLayout indicatorView;
     private NestedScrollView parentScrollView;
     private LinearLayout contentView;
     private BottomSheetBehavior sheetBehavior;
@@ -70,6 +90,9 @@ public abstract class BaseModalSheetFragmentDialog extends BottomSheetDialogFrag
     private boolean hideable = true;
     private boolean cancelable = true;
     private boolean canceledOnTouchOutside = true;
+
+    private TextView titleView;
+    private ImageButton closeView;
 
     public BaseModalSheetFragmentDialog() {
     }
@@ -90,8 +113,9 @@ public abstract class BaseModalSheetFragmentDialog extends BottomSheetDialogFrag
         super.onViewCreated(view, savedInstanceState);
 
 
-        indicatorView = view.findViewById(R.id.indicatorView);
-        bottomSheet = view.findViewById(R.id.bottomSheet);
+        indicatorView = view.findViewById(R.id.modal_sheet_indicator_container);
+        titleView = view.findViewById(R.id.modal_sheet_title);
+        closeView = view.findViewById(R.id.modal_sheet_button_close);
         parentScrollView = view.findViewById(R.id.parentScrollView);
         contentView = view.findViewById(R.id.contentView);
 
@@ -102,7 +126,7 @@ public abstract class BaseModalSheetFragmentDialog extends BottomSheetDialogFrag
             indicatorView.setElevation(scrollView.canScrollVertically(-1) ? 10 : 0);
         });
 
-        onViewAttached();
+        onViewAttached(view);
 
     }
 

@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.core.widget.NestedScrollView;
-
 import com.ldr.enterprise.modalsheet.base.BaseActivity;
 
 import butterknife.ButterKnife;
@@ -27,9 +25,9 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.buttonShowModalDialog)
     void onShowModalDialogClicked() {
-        View sheetView = getLayoutInflater().inflate(R.layout.dialog_brand_info, null, false);
+        View sheetView = getLayoutInflater().inflate(R.layout.dialog_send_gift_info, null, false);
         new SheetDialogHelper.Builder(this)
-                .setCancellable(false)
+                .setCancellable(true)
                 .setCancellableOnTouchOutside(false)
                 .setContentView(sheetView)
                 .setOnCancelListener(dialog -> {

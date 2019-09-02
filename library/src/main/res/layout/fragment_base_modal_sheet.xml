@@ -13,20 +13,55 @@
 	app:layout_behavior="@string/bottom_sheet_behavior"
 	tools:context=".BaseModalSheetFragmentDialog">
 	
-	<FrameLayout
-		android:id="@+id/indicatorView"
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:id="@+id/modal_sheet_indicator_container"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 		
 		<View
+			android:id="@+id/modal_sheet_indicator"
 			android:layout_width="64dp"
 			android:layout_height="6dp"
 			android:layout_gravity="center_horizontal|center_vertical"
-			android:layout_marginTop="8dp"
+			android:layout_marginTop="16dp"
 			android:layout_marginBottom="8dp"
-			android:background="@drawable/bottom_sheet_indicator" />
+			android:background="@drawable/bottom_sheet_indicator"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintVertical_bias="0.0" />
+		
+		<ImageButton
+			android:id="@+id/modal_sheet_button_close"
+			android:layout_width="34dp"
+			android:layout_height="34dp"
+			android:layout_gravity="center_vertical|end"
+			android:layout_marginTop="8dp"
+			android:layout_marginEnd="16dp"
+			android:layout_marginBottom="2dp"
+			android:background="@drawable/circle_drawable"
+			android:padding="2dp"
+			android:src="@drawable/ic_close_white"
+			android:visibility="gone"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+		
+		<TextView
+			android:id="@+id/modal_sheet_title"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="16dp"
+			android:layout_marginEnd="16dp"
+			android:textSize="20sp"
+			android:visibility="gone"
+			app:layout_constraintEnd_toStartOf="@+id/modal_sheet_button_close"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/modal_sheet_indicator"
+			tools:text="Title" />
 	
-	</FrameLayout>
+	</androidx.constraintlayout.widget.ConstraintLayout>
 	
 	<androidx.core.widget.NestedScrollView
 		android:id="@+id/parentScrollView"

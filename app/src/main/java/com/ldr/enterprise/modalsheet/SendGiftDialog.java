@@ -9,35 +9,32 @@ import androidx.annotation.Nullable;
 
 import com.ldr.enterprise.library.BaseModalSheetFragmentDialog;
 
-public class BrandInfoDialog extends BaseModalSheetFragmentDialog {
+public class SendGiftDialog extends BaseModalSheetFragmentDialog {
 
-    public BrandInfoDialog() {
+    public SendGiftDialog() {
     }
 
-    public static BrandInfoDialog newInstance() {
-        return new BrandInfoDialog();
+    public static SendGiftDialog newInstance() {
+        return new SendGiftDialog();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHideable(false);
+        setHideable(true);
         setHalfExpandedEnabled();
-        setCancelable(false);
-        setCanceledOnTouchOutside(false);
+        setCancelable(true);
+        setCanceledOnTouchOutside(true);
     }
 
     @NonNull
     @Override
     protected int getLayoutRes() {
-        return R.layout.dialog_brand_info;
+        return R.layout.dialog_send_gift_info;
     }
 
     @Override
     protected void onViewAttached(View view) {
         Toast.makeText(getContext(), "Showing Modal", Toast.LENGTH_LONG).show();
-        setOnCloseClickedListener(v -> {
-            dismiss();
-        });
     }
 }

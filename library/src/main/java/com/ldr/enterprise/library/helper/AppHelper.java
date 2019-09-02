@@ -6,15 +6,18 @@ import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
 import android.view.WindowInsets;
 
 import java.text.DecimalFormat;
+import java.util.Timer;
 
 public class AppHelper {
 
     private static final String TAG = AppHelper.class.getSimpleName();
 
     public static int getStatusBarHeight(Activity context) {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             WindowInsets windowInsets = context.getWindow().getDecorView().getRootWindowInsets();
             if (windowInsets != null && windowInsets.getDisplayCutout() != null) {
@@ -84,6 +87,16 @@ public class AppHelper {
     public static int dp(Context context, int dp) {
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, dm);
+    }
+
+    public static void updateViewHeight(View v) {
+        Activity host = (Activity) v.getContext();
+        host.getWindow().getDecorView().setOnApplyWindowInsetsListener((view, windowInsets) -> {
+            Log.d(TAG, "onApplyWindowInsets: " + windowInsets.getSystemWindowInsetTop());
+            v.setMinimumHeight(windowInsets.getSystemWindowInsetTop());
+            v.requestLayout();
+            return windowInsets;
+        });
     }
 
 }
