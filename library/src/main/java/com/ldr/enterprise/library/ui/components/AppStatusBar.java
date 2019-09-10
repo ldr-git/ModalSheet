@@ -14,28 +14,28 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 
 import com.ldr.enterprise.library.R;
-import com.ldr.enterprise.library.helper.AppHelper;
+import com.ldr.enterprise.library.helper.LibraryHelper;
 
-public class StatusBar extends LinearLayout {
+public class AppStatusBar extends LinearLayout {
 
     private Context context;
     private int statusBarColor = Integer.MIN_VALUE;
 
-    public StatusBar(Context context) {
+    public AppStatusBar(Context context) {
         super(context);
     }
 
-    public StatusBar(Context context, @Nullable AttributeSet attrs) {
+    public AppStatusBar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public StatusBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public AppStatusBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
 
-    public StatusBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public AppStatusBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs);
     }
@@ -44,10 +44,10 @@ public class StatusBar extends LinearLayout {
         this.context = context;
         if (attrs != null) {
             TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
-                    R.styleable.StatusBar, 0, 0);
+                    R.styleable.AppStatusBar, 0, 0);
             try {
                 //get the text and colors specified using the names in attrs.xml
-                statusBarColor = a.getInteger(R.styleable.StatusBar_statusBarColor, Integer.MIN_VALUE);//0 is default
+                statusBarColor = a.getInteger(R.styleable.AppStatusBar_statusBarColor, Integer.MIN_VALUE);//0 is default
             } finally {
                 a.recycle();
             }
@@ -74,7 +74,7 @@ public class StatusBar extends LinearLayout {
         super.onAttachedToWindow();
         Activity host = getActivity(getContext());
 
-        int height = AppHelper.getStatusBarHeight(host);
+        int height = LibraryHelper.getStatusBarHeight(host);
         Log.d("BAR", "onAttachedToWindow: " + height);
         ViewGroup.LayoutParams viewParams = getLayoutParams();
         if (viewParams != null) {

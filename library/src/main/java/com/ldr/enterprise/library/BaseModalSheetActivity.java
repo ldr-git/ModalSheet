@@ -1,7 +1,6 @@
 package com.ldr.enterprise.library;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -9,9 +8,11 @@ import android.widget.TextView;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.ldr.enterprise.library.helper.AppHelper;
+import com.ldr.enterprise.library.helper.LibraryHelper;
 import com.ldr.enterprise.library.interfaces.SimpleBottomSheetCallback;
 
 public abstract class BaseModalSheetActivity extends AppCompatActivity {
@@ -43,6 +44,32 @@ public abstract class BaseModalSheetActivity extends AppCompatActivity {
         }
     }
 
+    public void setPeekHeight(int peekHeight) {
+        this.peekHeight = peekHeight;
+        if (bottomSheetBehavior != null) {
+            bottomSheetBehavior.setPeekHeight(peekHeight);
+        }
+    }
+
+    public void setHalfExpandedEnabled(boolean halfExpandedEnabled) {
+        this.halfExpandedEnabled = halfExpandedEnabled;
+        if (bottomSheetBehavior != null) {
+            if (halfExpandedEnabled) {
+                bottomSheetBehavior.setHalfExpandedRatio(0.6f);
+                bottomSheetBehavior.setFitToContents(false);
+            } else {
+                bottomSheetBehavior.setFitToContents(true);
+            }
+        }
+    }
+
+    public void setHideable(boolean hideable) {
+        this.hideable = hideable;
+        if (bottomSheetBehavior != null) {
+            bottomSheetBehavior.setHideable(hideable);
+        }
+    }
+
     protected void setOnCloseClickedListener(View.OnClickListener onClickListener) {
         findViewById(R.id.modal_sheet_button_close).setVisibility(View.VISIBLE);
         findViewById(R.id.modal_sheet_button_close).setOnClickListener(onClickListener);
@@ -59,10 +86,16 @@ public abstract class BaseModalSheetActivity extends AppCompatActivity {
         }
     }
 
+    private int peekHeight = 0;
+    private boolean halfExpandedEnabled = true;
+    private boolean hideable = false;
+
     private int offset = 0;
 
+    ConstraintLayout indicatorView;
     LinearLayout bottomSheet;
     LinearLayout contentView;
+    NestedScrollView parentScrollView;
     LinearLayout contentBackground;
 
     BottomSheetBehavior bottomSheetBehavior;
@@ -72,22 +105,28 @@ public abstract class BaseModalSheetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base_modal_sheet);
 
+        indicatorView = findViewById(R.id.modal_sheet_indicator_container);
         bottomSheet = findViewById(R.id.bottomSheet);
         contentView = findViewById(R.id.contentView);
+        parentScrollView = findViewById(R.id.parentScrollView);
         contentBackground = findViewById(R.id.contentBackground);
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
-        bottomSheetBehavior.setHalfExpandedRatio(0.6f);
-        bottomSheetBehavior.setFitToContents(false);
+        if (halfExpandedEnabled) {
+            bottomSheetBehavior.setHalfExpandedRatio(0.6f);
+            bottomSheetBehavior.setFitToContents(false);
+        } else {
+            bottomSheetBehavior.setFitToContents(true);
+        }
 
-        getWindow().getDecorView().setOnApplyWindowInsetsListener((view, windowInsets) -> {
-            Log.d(TAG, "onApplyWindowInsets: " + windowInsets.getSystemWindowInsetTop());
-            bottomSheetBehavior.setExpandedOffset(windowInsets.getSystemWindowInsetTop());
-            return windowInsets;
-        });
+        if (peekHeight != 0) {
+            bottomSheetBehavior.setPeekHeight(peekHeight);
+        }
 
-        bottomSheetBehavior.setExpandedOffset(offset != 0 ? offset : AppHelper.getStatusBarHeight(this));
+        bottomSheetBehavior.setHideable(hideable);
+
+        bottomSheetBehavior.setExpandedOffset(offset != 0 ? offset : LibraryHelper.getStatusBarHeight(this));
         bottomSheetBehavior.setBottomSheetCallback(new SimpleBottomSheetCallback() {
 
             @Override
@@ -103,6 +142,10 @@ public abstract class BaseModalSheetActivity extends AppCompatActivity {
             }
         });
 
+        parentScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (scrollView, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            indicatorView.setElevation(scrollView.canScrollVertically(-1) ? 10 : 0);
+        });
+
         View foregroundView = getLayoutInflater().inflate(getForegroundLayoutRes(), null, false);
         contentView.addView(foregroundView);
 
@@ -114,11 +157,10 @@ public abstract class BaseModalSheetActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-
+    protected void onResume() {
+        super.onResume();
         if (bottomSheetBehavior != null) {
-            bottomSheetBehavior.setExpandedOffset(AppHelper.getStatusBarHeight(this));
+            bottomSheetBehavior.setExpandedOffset(offset != 0 ? offset : LibraryHelper.getStatusBarHeight(this));
         }
     }
 }

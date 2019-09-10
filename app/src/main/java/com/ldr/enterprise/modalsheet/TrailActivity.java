@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.ldr.enterprise.library.BaseModalSheetActivity;
-import com.ldr.enterprise.library.helper.AppHelper;
+import com.ldr.enterprise.library.helper.LibraryHelper;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -51,9 +51,9 @@ public class TrailActivity extends BaseModalSheetActivity {
             ex.printStackTrace();
         }
 
-        setExpandedOffset(AppHelper.getStatusBarHeight(this));
+        setExpandedOffset(LibraryHelper.getStatusBarHeight(this));
 
-        AppHelper.getStatusBarHeight(this);
+        LibraryHelper.getStatusBarHeight(this);
 
         setOnCloseClickedListener(view -> {
             finish();

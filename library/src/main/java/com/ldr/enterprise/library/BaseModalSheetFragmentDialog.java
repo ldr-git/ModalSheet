@@ -22,8 +22,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.ldr.enterprise.library.helper.AppHelper;
-import com.ldr.enterprise.library.interfaces.SimpleBottomSheetCallback;
+import com.ldr.enterprise.library.helper.LibraryHelper;
 
 public abstract class BaseModalSheetFragmentDialog extends BottomSheetDialogFragment {
 
@@ -81,6 +80,10 @@ public abstract class BaseModalSheetFragmentDialog extends BottomSheetDialogFrag
         this.hideable = hideable;
     }
 
+    public void setOffsetExpanded(boolean offsetExpanded) {
+        isOffsetExpanded = offsetExpanded;
+    }
+
     private ConstraintLayout indicatorView;
     private NestedScrollView parentScrollView;
     private LinearLayout contentView;
@@ -90,6 +93,7 @@ public abstract class BaseModalSheetFragmentDialog extends BottomSheetDialogFrag
     private boolean hideable = true;
     private boolean cancelable = true;
     private boolean canceledOnTouchOutside = true;
+    private boolean isOffsetExpanded = false;
 
     private TextView titleView;
     private ImageButton closeView;
@@ -112,7 +116,6 @@ public abstract class BaseModalSheetFragmentDialog extends BottomSheetDialogFrag
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         indicatorView = view.findViewById(R.id.modal_sheet_indicator_container);
         titleView = view.findViewById(R.id.modal_sheet_title);
         closeView = view.findViewById(R.id.modal_sheet_button_close);
@@ -134,28 +137,29 @@ public abstract class BaseModalSheetFragmentDialog extends BottomSheetDialogFrag
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         BottomSheetDialog dialog = (BottomSheetDialog) getDialog();
-        dialog.setCancelable(cancelable);
-        dialog.setCanceledOnTouchOutside(canceledOnTouchOutside);
-        FrameLayout bottomSheetView = dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-        sheetBehavior = BottomSheetBehavior.from(bottomSheetView);
-        if (sheetBehavior != null) {
-            Log.d("SHEET", "BEHAVIOR FOUND");
-            if (halfExpandedEnabled) {
-                sheetBehavior.setHalfExpandedRatio(0.6f);
-                sheetBehavior.setFitToContents(false);
-            }
-            sheetBehavior.setHideable(hideable);
-            sheetBehavior.setExpandedOffset(AppHelper.getStatusBarHeight(getActivity()));
-            sheetBehavior.setPeekHeight(peekHeight != 0 ? peekHeight : AppHelper.dp(getActivity(), 200));
-            sheetBehavior.setBottomSheetCallback(new SimpleBottomSheetCallback() {
-                @Override
-                public void onStateChanged(int newState) {
-                    super.onStateChanged(newState);
-                    onStateChangedObserver(newState);
+        if (dialog != null) {
+            dialog.setCancelable(cancelable);
+            dialog.setCanceledOnTouchOutside(canceledOnTouchOutside);
+            FrameLayout bottomSheetView = dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheetView != null) {
+                sheetBehavior = BottomSheetBehavior.from(bottomSheetView);
+                if (sheetBehavior != null) {
+                    Log.d("SHEET", "BEHAVIOR FOUND");
+                    if (halfExpandedEnabled) {
+                        sheetBehavior.setHalfExpandedRatio(0.6f);
+                        sheetBehavior.setFitToContents(false);
+                    }
+                    sheetBehavior.setHideable(hideable);
+                    sheetBehavior.setExpandedOffset(isOffsetExpanded ? LibraryHelper.getStatusBarHeight(getActivity()) : 0);
+                    sheetBehavior.setPeekHeight(peekHeight != 0 ? peekHeight : LibraryHelper.dp(getActivity(), 200));
+                } else {
+                    Log.d("SHEET", "BEHAVIOR NOT FOUND");
                 }
-            });
+            } else {
+                Log.d("SHEET", "SHEET NOT FOUND");
+            }
         } else {
-            Log.d("SHEET", "BEHAVIOR NOT FOUND");
+            Log.d("SHEET", "DIALOG NOT FOUND");
         }
     }
 

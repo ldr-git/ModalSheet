@@ -7,20 +7,17 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.WindowInsets;
 
 import java.text.DecimalFormat;
-import java.util.Timer;
 
-public class AppHelper {
+public class LibraryHelper {
 
-    private static final String TAG = AppHelper.class.getSimpleName();
+    private static final String TAG = LibraryHelper.class.getSimpleName();
 
     public static int getStatusBarHeight(Activity context) {
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            WindowInsets windowInsets = context.getWindow().getDecorView().getRootWindowInsets();
-            if (windowInsets != null && windowInsets.getDisplayCutout() != null) {
+//            WindowInsets windowInsets = context.getWindow().getDecorView().getRootWindowInsets();
+//            if (windowInsets != null && windowInsets.getDisplayCutout() != null) {
                 Log.d("BAR", "cutouts()");
                 int statusBarHeight = 0;
                 int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -29,10 +26,10 @@ public class AppHelper {
                 }
                 Log.d("BAR", "statusBarHeight : " + statusBarHeight);
                 return statusBarHeight;
-            } else {
-                Log.d("BAR", "default()");
-                return getStatusBarHeight(context.getBaseContext());
-            }
+//            } else {
+////                Log.d("BAR", "default()");
+////                return getStatusBarHeight(context.getBaseContext());
+////            }
         } else {
             int height = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? 24 : 25;
             float density = context.getResources().getDisplayMetrics().density;
