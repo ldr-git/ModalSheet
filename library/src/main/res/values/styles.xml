@@ -15,6 +15,12 @@
 	</style>
 	
 	<!-- set the rounded drawable as background to your bottom sheet -->
+	<style name="BottomSheet.NoBackground" parent="@style/Widget.Design.BottomSheet.Modal">
+		<item name="android:background">@android:color/transparent</item>
+		<item name="behavior_peekHeight">200dp</item>
+		<item name="behavior_fitToContents">false</item>
+	</style>
+	
 	<style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
 		<item name="android:background">@drawable/bottom_sheet_background</item>
 		<item name="behavior_peekHeight">200dp</item>
@@ -23,10 +29,21 @@
 	
 	<style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
 		<item name="android:windowIsFloating">false</item>
+		<item name="windowActionBar">false</item>
+		<item name="windowNoTitle">true</item>
 		<item name="bottomSheetStyle">@style/BottomSheet</item>
 	</style>
 	
+	<style name="BaseBottomSheetDialog.NoBackground" parent="@style/Theme.Design.Light.BottomSheetDialog">
+		<item name="android:windowIsFloating">false</item>
+		<item name="windowActionBar">false</item>
+		<item name="windowNoTitle">true</item>
+		<item name="bottomSheetStyle">@style/BottomSheet.NoBackground</item>
+	</style>
+	
 	<style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
+	
+	<style name="BottomSheetDialogTheme.NoBackground" parent="BaseBottomSheetDialog.NoBackground" />
 	
 	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 	
