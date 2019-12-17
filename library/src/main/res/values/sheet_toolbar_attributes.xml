@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SheetToolbar">
+        <attr name="sheetTitle" format="string" />
+        <attr name="sheetTitleVisible" format="boolean" />
+        <attr name="sheetCloseVisible" format="boolean" />
+        <attr name="sheetIndicatorVisible" format="boolean" />
+        <attr name="sheetDividerVisible" format="boolean" />
+    </declare-styleable>
+</resources>
